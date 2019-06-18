@@ -9,6 +9,30 @@ import tensorflow as tf
 from tensorflow.python.framework import ops
 from cnn_utils import *
 
+
+def create_placeholders(n_H0, n_W0, n_C0, n_y):
+    """
+    Creates the placeholders for the tensorflow session.
+
+    Arguments:
+    n_H0 -- scalar, height of an input image
+    n_W0 -- scalar, width of an input image
+    n_C0 -- scalar, number of channels of the input
+    n_y -- scalar, number of classes
+
+    Returns:
+    X -- placeholder for the data input, of shape [None, n_H0, n_W0, n_C0] and dtype "float"
+    Y -- placeholder for the input labels, of shape [None, n_y] and dtype "float"
+    """
+
+    ### START CODE HERE ### (≈2 lines)
+    X = tf.placeholder(tf.float32, [None, n_H0, n_W0, n_C0])
+    Y = tf.placeholder(tf.float32, [None, n_y])
+    ### END CODE HERE ###
+
+    return X, Y
+
+
 def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
           num_epochs=100, minibatch_size=64, print_cost=True):
     """
@@ -122,5 +146,12 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
         return train_accuracy, test_accuracy, parameters
 
 if __name__ == "__main__":
-  _, _, parameters = model(X_train, Y_train, X_test, Y_test)
+    X_train_orig, Y_train_orig, X_test_orig, Y_test_orig, classes = load_dataset()
+    X_train = X_train_orig / 255.
+    X_test = X_test_orig / 255.
+    print(Y_train_orig.shape)
+    Y_train = convert_to_one_hot(Y_train_orig, 6).T
+    print(Y_train.shape)
+    Y_test = convert_to_one_hot(Y_test_orig, 6).T
+    _, _, parameters = model(X_train, Y_train, X_test, Y_test)
 

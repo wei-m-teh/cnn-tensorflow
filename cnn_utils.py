@@ -13,6 +13,9 @@ def load_dataset():
     test_dataset = h5py.File('datasets/test_signs.h5', "r")
     test_set_x_orig = np.array(test_dataset["test_set_x"][:]) # your test set features
     test_set_y_orig = np.array(test_dataset["test_set_y"][:]) # your test set labels
+    print(train_set_x_orig.shape)
+    print(train_set_y_orig.shape)
+
 
     classes = np.array(test_dataset["list_classes"][:]) # the list of classes
     
